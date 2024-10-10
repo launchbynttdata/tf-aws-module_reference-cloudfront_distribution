@@ -10,6 +10,8 @@ CloudFront Distribution: Creates and configures a CloudFront distribution with t
 DNS Record: Creates DNS records for the CloudFront distribution in Route 53.
 Hosted Zone: Uses existing Route 53 hosted zone to create DNS records for the CloudFront distribution.
 
+*** This Reference module is used to create a CloudFront distribution with only `us-east-1` region as ACM for CloudFront is needed from `us-east-1` region. ***
+
 ## Pre-Commit hooks
 
 [.pre-commit-config.yaml](.pre-commit-config.yaml) file defines certain `pre-commit` hooks that are relevant to terraform, golang and common linting tasks. There are no custom hooks added.
@@ -146,7 +148,6 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="input_environment_number"></a> [environment\_number](#input\_environment\_number) | The environment count for the respective environment. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_resource_number"></a> [resource\_number](#input\_resource\_number) | The resource count for the respective resource. Defaults to 000. Increments in value of 1 | `string` | `"000"` | no |
 | <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br>    name       = string<br>    max_length = optional(number, 60)<br>  }))</pre> | <pre>{<br>  "cloudfront": {<br>    "name": "cdn"<br>  }<br>}</pre> | no |
-| <a name="input_aliases"></a> [aliases](#input\_aliases) | Extra CNAMEs (alternate domain names), if any, for this distribution. | `list(string)` | `[]` | no |
 | <a name="input_comment"></a> [comment](#input\_comment) | Any comments you want to include about the distribution. | `string` | `null` | no |
 | <a name="input_continuous_deployment_policy_id"></a> [continuous\_deployment\_policy\_id](#input\_continuous\_deployment\_policy\_id) | Identifier of a continuous deployment policy. This argument should only be set on a production distribution. See the aws\_cloudfront\_continuous\_deployment\_policy resource for additional details: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_continuous_deployment_policy | `string` | `null` | no |
 | <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | One or more custom error response elements. | <pre>list(object({<br>    error_caching_min_ttl = optional(number, null)<br>    error_code            = number<br>    response_code         = optional(number, null)<br>    response_page_path    = optional(string, null)<br>  }))</pre> | `[]` | no |
