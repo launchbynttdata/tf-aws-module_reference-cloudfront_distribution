@@ -42,7 +42,7 @@ locals {
 
   origin = {
     origin1 = {
-      domain_name = "${module.aws_s3_bucket.s3_bucket_bucket_domain_name}"
+      domain_name = module.aws_s3_bucket.s3_bucket_bucket_domain_name
     }
   }
 }

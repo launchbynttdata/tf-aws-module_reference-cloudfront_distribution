@@ -95,12 +95,6 @@ variable "resource_names_map" {
 
 # Variables related to cloudfront_distribution module
 
-variable "aliases" {
-  description = "Extra CNAMEs (alternate domain names), if any, for this distribution."
-  type        = list(string)
-  default     = []
-}
-
 variable "comment" {
   description = "Any comments you want to include about the distribution."
   type        = string

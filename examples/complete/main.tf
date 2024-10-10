@@ -18,10 +18,10 @@ module "aws_s3_bucket" {
   bucket        = var.bucket_name
   force_destroy = true
 
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = var.block_public_acls
+  block_public_policy     = var.block_public_policy
+  ignore_public_acls      = var.ignore_public_acls
+  restrict_public_buckets = var.restrict_public_buckets
 
   website = {
     index_document = "index.html"
@@ -36,7 +36,7 @@ resource "aws_s3_object" "html_files" {
   key          = each.value
   source       = each.value
   content_type = "text/html"
-  etag         = filemd5("${each.value}")
+  etag         = filemd5(each.value)
 }
 
 resource "aws_s3_bucket_policy" "website_bucket_policy" {
@@ -50,7 +50,7 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
         Principal = "*"
         Action    = "s3:GetObject"
         Resource = ["${module.aws_s3_bucket.s3_bucket_arn}/*",
-        "${module.aws_s3_bucket.s3_bucket_arn}"]
+        module.aws_s3_bucket.s3_bucket_arn]
       }
     ]
   })

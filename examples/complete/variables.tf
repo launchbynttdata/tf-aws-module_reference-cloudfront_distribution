@@ -83,12 +83,6 @@ variable "resource_names_map" {
 
 # Variables related to cloudfront_distribution module
 
-variable "aliases" {
-  description = "Extra CNAMEs (alternate domain names), if any, for this distribution."
-  type        = list(string)
-  default     = []
-}
-
 variable "comment" {
   description = "Any comments you want to include about the distribution."
   type        = string
@@ -233,12 +227,6 @@ variable "staging" {
 
 }
 
-variable "tags" {
-  description = "Map of key-value pairs to associate with the resource."
-  type        = map(string)
-  default     = {}
-}
-
 variable "viewer_certificate" {
   description = "The SSL configuration for this distribution. Will use the cloudfront_default_certificate unless `acm_certificate_arn` or `iam_certificate_id` are specified (pick one; do not specify both). For specifics on configuration of minimum protocol versions, see https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution#viewer-certificate-arguments."
   type = object({
@@ -273,12 +261,6 @@ variable "private_zone" {
   EOT
   type        = bool
   default     = null
-}
-
-variable "additional_cnames" {
-  description = "Additional CNAME records to be created in the DNS zone pointing to the cloudfront. Must be FQDN in form of <cname>.<dns_zone_name>"
-  type        = list(string)
-  default     = []
 }
 
 # Variables related to dns_record module
@@ -322,12 +304,6 @@ variable "ignore_public_acls" {
   description = "Whether Amazon S3 should ignore public ACLs for this bucket."
   type        = bool
   default     = true
-}
-
-variable "website" {
-  description = "Map containing static web-site hosting or redirect configuration."
-  type        = any # map(string)
-  default     = {}
 }
 
 variable "html_files" {

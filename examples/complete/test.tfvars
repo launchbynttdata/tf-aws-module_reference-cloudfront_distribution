@@ -22,6 +22,10 @@ html_files = [
   "index.html",
   "error.html" # Add all the HTML files you want to upload
 ]
+block_public_acls       = false
+block_public_policy     = false
+ignore_public_acls      = false
+restrict_public_buckets = false
 
 //tfvars for cloudfront
 
