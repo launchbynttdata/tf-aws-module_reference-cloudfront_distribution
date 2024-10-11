@@ -3,8 +3,8 @@ package testimpl
 import (
 
 	"context"
-	"github.com/aws/aws-sdk-go-v2/service/acm"
 	"testing"
+	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -85,22 +85,18 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 		assert.Equal(t, *awsCloudfrontDistribution.Distribution.DomainName, cloudFrontDistributionDomainName, "Expected Status did not match actual Status!")
 	})
 
-	acmClient := acm.NewFromConfig(GetAWSConfig(t))
+	t.Run("TestCloudfrontDomainNameURL", func(t *testing.T) {
+		cloudFrontDistributionDomainName := terraform.Output(t, ctx.TerratestTerraformOptions(), "cloudfront_distribution_domain_name")
+		assert.NotEmpty(t, cloudFrontDistributionDomainName, "CloudFront Distribution Domain Name should not be empty")
 
-	t.Run("TestACMCertificateARN", func(t *testing.T) {
-		certificateARN := terraform.Output(t, ctx.TerratestTerraformOptions(), "acm_certificate_arn")
-		assert.NotEmpty(t, certificateARN, "ACM Certificate ARN should not be empty")
-
-		awsACMCertificate, err := acmClient.DescribeCertificate(context.TODO(), &acm.DescribeCertificateInput{
-			CertificateArn: &certificateARN,
-		})
+		resp, err := http.Get("https://" + cloudFrontDistributionDomainName)
 		if err != nil {
-			t.Errorf("Failure during GetCertificate: %v", err)
+			t.Errorf("Failed to hit CloudFront domain name URL: %v", err)
 		}
+		defer resp.Body.Close()
 
-		assert.Equal(t, *awsACMCertificate.Certificate.CertificateArn, certificateARN, "Expected ARN did not match actual ARN!")
+		assert.Equal(t, http.StatusOK, resp.StatusCode, "Expected status code 200")
 	})
-
 }
 
 // GetAWSConfig loads the AWS configuration

@@ -5,7 +5,6 @@ go 1.21
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.2
 	github.com/aws/aws-sdk-go-v2/config v1.27.43
-	github.com/aws/aws-sdk-go-v2/service/acm v1.30.2
 	github.com/aws/aws-sdk-go-v2/service/cloudfront v1.40.2
 	github.com/gruntwork-io/terratest v0.47.2
 	github.com/launchbynttdata/lcaf-component-terratest v1.0.4

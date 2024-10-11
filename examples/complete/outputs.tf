@@ -41,5 +41,6 @@ output "acm_certificate_arn" {
 }
 
 output "cloudfront_distribution_zone_id" {
-  value = module.cloudfront_distribution.cloudfront_distribution_hosted_zone_id
+  description = "The Hosted Zone ID of the CloudFront Distribution."
+  value       = module.cloudfront_distribution.cloudfront_distribution_hosted_zone_id
 }
