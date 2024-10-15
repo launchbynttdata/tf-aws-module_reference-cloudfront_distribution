@@ -14,6 +14,9 @@ module "aws_s3_bucket" {
 
   source  = "terraform-aws-modules/s3-bucket/aws"
   version = "~> 3.14.0"
+  providers = {
+    aws = aws.global
+  }
 
   bucket        = var.bucket_name
   force_destroy = true
@@ -31,6 +34,8 @@ module "aws_s3_bucket" {
 }
 
 resource "aws_s3_object" "html_files" {
+  provider = aws.global
+
   for_each     = toset(var.html_files)
   bucket       = module.aws_s3_bucket.s3_bucket_id
   key          = each.value
@@ -40,7 +45,8 @@ resource "aws_s3_object" "html_files" {
 }
 
 resource "aws_s3_bucket_policy" "website_bucket_policy" {
-  bucket = module.aws_s3_bucket.s3_bucket_id
+  bucket   = module.aws_s3_bucket.s3_bucket_id
+  provider = aws.global
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -129,6 +135,9 @@ module "acm" {
 
   source  = "terraform-aws-modules/acm/aws"
   version = "~> 4.3.2"
+  providers = {
+    aws = aws.global
+  }
 
   count       = var.dns_record != null ? 1 : 0
   domain_name = "${var.dns_record.name}.${data.aws_route53_zone.dns_zone.name}"

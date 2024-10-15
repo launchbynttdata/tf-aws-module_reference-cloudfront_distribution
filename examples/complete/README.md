@@ -12,7 +12,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.70.0 |
+| <a name="provider_aws.global"></a> [aws.global](#provider\_aws.global) | 5.71.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.71.0 |
 
 ## Modules
 
