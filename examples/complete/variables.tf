@@ -62,35 +62,10 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "region" {
-  description = "AWS Region in which the infra needs to be provisioned"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "resource_names_map" {
-  description = "A map of key to resource_name that will be used by tf-launch-module_library-resource_name to generate resource names"
-  type = map(object({
-    name       = string
-    max_length = optional(number, 60)
-  }))
-  default = {
-    cloudfront = {
-      name = "cdn"
-    }
-  }
-}
-
 # Variables related to cloudfront_distribution module
 
 variable "comment" {
   description = "Any comments you want to include about the distribution."
-  type        = string
-  default     = null
-}
-
-variable "continuous_deployment_policy_id" {
-  description = "Identifier of a continuous deployment policy. This argument should only be set on a production distribution. See the aws_cloudfront_continuous_deployment_policy resource for additional details: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_continuous_deployment_policy"
   type        = string
   default     = null
 }
@@ -146,85 +121,6 @@ variable "enabled" {
   description = "Whether the distribution is enabled to accept end user requests for content. Defaults to `true`."
   type        = bool
   default     = true
-}
-
-
-variable "http_version" {
-  description = "Maximum HTTP version to support on the distribution. Allowed values are `http1.1`, `http2`, `http2and3` and `http3`. The default is `http2`."
-  type        = string
-  default     = "http2"
-
-  validation {
-    condition     = contains(["http1.1", "http2", "http2and3", "http3"], var.http_version)
-    error_message = "http_version must be one of http1.1, http2, http2and3, http3"
-  }
-}
-
-variable "logging_config" {
-  description = "The logging configuration that controls how logs are written to your distribution."
-  type = object({
-    bucket          = string
-    include_cookies = optional(bool, false)
-    prefix          = optional(string, null)
-  })
-  default = null
-}
-
-variable "ordered_cache_behavior" {
-  description = "Ordered list of cache behaviors resource for this distribution. List from top to bottom in order of precedence. The topmost cache behavior will have precedence 0."
-  type = list(object({
-    allowed_methods           = optional(list(string), ["GET", "HEAD", "OPTIONS"])
-    cached_methods            = optional(list(string), ["GET", "HEAD"])
-    cache_policy_id           = optional(string, null)
-    compress                  = optional(bool, false)
-    default_ttl               = optional(number, null)
-    field_level_encryption_id = optional(string, null)
-    lambda_function_association = optional(list(object({
-      event_type   = string
-      function_arn = string
-      include_body = optional(bool, false)
-    })), [])
-    function_association = optional(list(object({
-      event_type   = string
-      function_arn = string
-    })), [])
-    max_ttl                    = optional(number, null)
-    min_ttl                    = optional(number, null)
-    origin_request_policy_id   = optional(string, null)
-    path_pattern               = optional(string, null)
-    realtime_log_config_arn    = optional(string, null)
-    response_headers_policy_id = optional(string, null)
-    smooth_streaming           = optional(bool, null)
-    target_origin_id           = string
-    trusted_key_groups         = optional(list(string), [])
-    trusted_signers            = optional(list(string), [])
-    viewer_protocol_policy     = optional(string, "redirect-to-https")
-  }))
-  default = []
-}
-
-variable "geo_restrictions_locations" {
-  description = "ISO 3166-1-alpha-2 codes for which you want CloudFront either to distribute your content (`whitelist`) or not distribute your content (`blacklist`). If the type is specified as `none` an empty array can be used (default)."
-  type        = list(string)
-  default     = []
-}
-
-variable "geo_restrictions_type" {
-  description = "Method that you want to use to restrict distribution of your content by country: `none`, `whitelist`, or `blacklist`."
-  type        = string
-  default     = "none"
-
-  validation {
-    condition     = contains(["none", "whitelist", "blacklist"], var.geo_restrictions_type)
-    error_message = "geo_restrictions_type must be one of none, whitelist, blacklist"
-  }
-}
-
-variable "staging" {
-  description = "A Boolean that indicates whether this is a staging distribution. Defaults to `false`."
-  type        = bool
-  default     = false
-
 }
 
 variable "viewer_certificate" {

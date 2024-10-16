@@ -81,7 +81,7 @@ module "aws_dns_record" {
 
 }
 
-# ACM Certificate for the Cloudfront Distribution. c
+# ACM Certificate for the Cloudfront Distribution.
 
 module "acm" {
   source  = "terraform-aws-modules/acm/aws"

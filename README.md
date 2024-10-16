@@ -120,7 +120,7 @@ If `make check` target is successful, developer is good to commit the code to pr
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.70.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.72.0 |
 
 ## Modules
 
@@ -181,5 +181,5 @@ If `make check` target is successful, developer is good to commit the code to pr
 | <a name="output_cloudfront_distribution_domain_name"></a> [cloudfront\_distribution\_domain\_name](#output\_cloudfront\_distribution\_domain\_name) | The Domain Name of the CloudFront Distribution. |
 | <a name="output_record_fqdns"></a> [record\_fqdns](#output\_record\_fqdns) | FQDNs built using the zone domain and name. |
 | <a name="output_acm_certificate_arn"></a> [acm\_certificate\_arn](#output\_acm\_certificate\_arn) | The ARN of the ACM Certificate. |
-| <a name="output_cloudfront_distribution_zone_id"></a> [cloudfront\_distribution\_zone\_id](#output\_cloudfront\_distribution\_zone\_id) | The Zone ID of the CloudFront Distribution. |
+| <a name="output_cloudfront_distribution_hosted_zone_id"></a> [cloudfront\_distribution\_hosted\_zone\_id](#output\_cloudfront\_distribution\_hosted\_zone\_id) | The Zone ID of the CloudFront Distribution. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

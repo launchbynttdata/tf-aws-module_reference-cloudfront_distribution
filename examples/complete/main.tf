@@ -10,6 +10,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// This module create s3 bucket with the required configurations and policies for hosting a static website
+
 module "aws_s3_bucket" {
 
   source  = "terraform-aws-modules/s3-bucket/aws"
@@ -62,85 +64,29 @@ resource "aws_s3_bucket_policy" "website_bucket_policy" {
   })
 }
 
-# This module generates the resource-name of resources based on resource_type, logical_product_family, logical_product_service, env etc.
-module "resource_names" {
-
-  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
-  version = "~> 2.0"
-
-  for_each = var.resource_names_map
-
-  logical_product_family  = var.logical_product_family
-  logical_product_service = var.logical_product_service
-  region                  = join("", split("-", var.region))
-  class_env               = var.environment
-  cloud_resource_type     = each.value.name
-  maximum_length          = each.value.max_length
-}
-
-#This module creates the Cloudfront distribution with the required configurations
+#This module creates the Cloudfront distribution with the required configurations and integrates with the s3 bucket, acm certificate and route53.
 
 module "cloudfront_distribution" {
 
-  source  = "terraform.registry.launch.nttdata.com/module_primitive/cloudfront_distribution/aws"
-  version = "~> 1.0"
+  source = "../.."
 
-  enabled                         = var.enabled
-  aliases                         = local.aliases
-  comment                         = var.comment
-  continuous_deployment_policy_id = var.continuous_deployment_policy_id
-  default_root_object             = var.default_root_object
-  staging                         = var.staging
-  tags                            = local.tags
-  http_version                    = var.http_version
-  default_cache_behavior          = var.default_cache_behavior
-  custom_error_response           = var.custom_error_response
-  logging_config                  = var.logging_config
-  ordered_cache_behavior          = var.ordered_cache_behavior
-  origin                          = local.origin
-  geo_restrictions_type           = var.geo_restrictions_type
-  geo_restrictions_locations      = var.geo_restrictions_locations
-  viewer_certificate              = local.viewer_certificate
-
-  depends_on = [module.acm]
-
-}
-
-# DNS Zone where the records for the Cloudfront will be created
-data "aws_route53_zone" "dns_zone" {
-
-  name         = var.dns_zone_name
-  private_zone = var.private_zone
-}
-
-# DNS Record for the Cloudfront Distribution
-
-module "aws_dns_record" {
-
-  source  = "terraform.registry.launch.nttdata.com/module_primitive/dns_record/aws"
-  version = "~> 1.0"
-
-  count   = var.dns_record != null ? 1 : 0
-  zone_id = data.aws_route53_zone.dns_zone.zone_id
-
-  records = local.cloudfront_record
-
-  depends_on = [module.acm]
-
-}
-
-# ACM Certificate for the Cloudfront Distribution.
-
-module "acm" {
-
-  source  = "terraform-aws-modules/acm/aws"
-  version = "~> 4.3.2"
   providers = {
     aws = aws.global
   }
 
-  count       = var.dns_record != null ? 1 : 0
-  domain_name = "${var.dns_record.name}.${data.aws_route53_zone.dns_zone.name}"
-  zone_id     = data.aws_route53_zone.dns_zone.zone_id
-  tags        = local.tags
+  enabled                 = var.enabled
+  default_root_object     = var.default_root_object
+  default_cache_behavior  = var.default_cache_behavior
+  custom_error_response   = var.custom_error_response
+  private_zone            = var.private_zone
+  logical_product_family  = var.logical_product_family
+  logical_product_service = var.logical_product_service
+  origin                  = local.origin
+  viewer_certificate      = var.viewer_certificate
+  environment             = var.environment
+  comment                 = var.comment
+  dns_zone_name           = var.dns_zone_name
+  dns_record              = var.dns_record
+  tags                    = local.tags
+
 }

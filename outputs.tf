@@ -41,7 +41,7 @@ output "acm_certificate_arn" {
   value       = try(module.acm[0].acm_certificate_arn, {})
 }
 
-output "cloudfront_distribution_zone_id" {
+output "cloudfront_distribution_hosted_zone_id" {
   description = "The Zone ID of the CloudFront Distribution."
   value       = module.cloudfront_distribution.cloudfront_distribution_hosted_zone_id
 }

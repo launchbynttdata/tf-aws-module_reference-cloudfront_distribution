@@ -14,6 +14,7 @@
 
 logical_product_family  = "launch"
 logical_product_service = "frontend"
+environment             = "dev"
 
 // tfvars for s3 bucket
 
@@ -29,8 +30,8 @@ restrict_public_buckets = false
 
 //tfvars for cloudfront
 
-enabled = true
-
+enabled             = true
+comment             = "Cloudfront Distribution for launch-static-webhosting"
 default_root_object = "index.html"
 
 viewer_certificate = {

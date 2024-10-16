@@ -12,32 +12,10 @@
 
 locals {
 
-  cloudfront_record = var.dns_record != null ? {
-
-    (var.dns_record.name) = {
-      type = var.dns_record.type
-      name = var.dns_record.name
-      alias = {
-        name                   = module.cloudfront_distribution.cloudfront_distribution_domain_name
-        zone_id                = module.cloudfront_distribution.cloudfront_distribution_hosted_zone_id
-        evaluate_target_health = false
-      }
-    }
-  } : {}
-
-  viewer_certificate = {
-    acm_certificate_arn      = module.acm[0].acm_certificate_arn
-    ssl_support_method       = var.viewer_certificate.ssl_support_method
-    minimum_protocol_version = var.viewer_certificate.minimum_protocol_version
-  }
-
-  aliases = var.dns_record != null ? ["${var.dns_record.name}.${var.dns_zone_name}"] : []
-
   tags = {
     logical_product_family  = var.logical_product_family
     logical_product_service = var.logical_product_service
     environment             = var.environment
-    region                  = var.region
   }
 
   origin = {

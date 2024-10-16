@@ -32,15 +32,15 @@ output "cloudfront_distribution_domain_name" {
 
 output "record_fqdns" {
   description = "FQDNs built using the zone domain and name."
-  value       = try(module.aws_dns_record[0].record_fqdns, "")
+  value       = try(module.cloudfront_distribution.record_fqdns, "")
 }
 
 output "acm_certificate_arn" {
   description = "The ARN of the ACM Certificate."
-  value       = try(module.acm[0].acm_certificate_arn, "")
+  value       = try(module.cloudfront_distribution.acm_certificate_arn, "")
 }
 
-output "cloudfront_distribution_zone_id" {
+output "cloudfront_distribution_hosted_zone_id" {
   description = "The Hosted Zone ID of the CloudFront Distribution."
   value       = module.cloudfront_distribution.cloudfront_distribution_hosted_zone_id
 }
