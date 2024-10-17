@@ -16,4 +16,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Lint Terraform
-      uses: launchbynttdata/actions-lcaf-terraform_lint@v0
+      uses: launchbynttdata/actions-lcaf-terraform_lint@test-swap-order
