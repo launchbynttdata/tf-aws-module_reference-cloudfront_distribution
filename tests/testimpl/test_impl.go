@@ -92,7 +92,7 @@ func TestComposableComplete(t *testing.T, ctx types.TestContext) {
 		if err != nil {
 			t.Errorf("Failed to hit CloudFront domain name URL: %v", err)
 		}
-		defer resp.Body.Close()
+		defer func() { _ = resp.Body.Close() }()
 
 		assert.Equal(t, http.StatusOK, resp.StatusCode, "Expected status code 200")
 	})
